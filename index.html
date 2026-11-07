@@ -1435,6 +1435,10 @@ const RAMPS=[
   {id:'momo',x0:-110,x1:-104,z0:-46,z1:52,a:'z',f:52,t:-46,h0:0,h1:30,name:'百々橋口道'}];
 /* 高さを1.3倍に（安土山の高さ約110mを見た目に近づける） */
 const HS=1.3; PLAT.forEach(p=>{ p.H*=HS; p.wall*=HS; }); RAMPS.forEach(r=>{ r.h0*=HS; r.h1*=HS; });
+/* 大手道から両側の屋敷へ入る石段（大手道の路面の高さ → 屋敷の曲輪の高さ）。門の前で石塁と土塀を切る */
+const ENTR=[['hideL',-1,18],['hideU',-1,-14],['toshiie',1,8],['ieyasu',1,-46],['sekian',-1,-41]];
+for(const [id,sd,z] of ENTR){ const P=PL[id],road=RAMPS[0],hr=road.h0+(road.h1-road.h0)*Math.max(0,Math.min(1,(z-road.f)/(road.t-road.f))),edge=sd<0?P.x1:P.x0;
+  RAMPS.push({id:'ent_'+id,x0:sd<0?edge-.6:4.2,x1:sd<0?-4.2:edge+.6,z0:z-1.7,z1:z+1.7,a:'x',f:sd*4.2,t:edge,h0:hr,h1:P.H,name:P.name.replace(/（.*?）/,'')+'の門前'}); }
 function rampH(r,x,z){ const c=r.a==='x'?x:z,u=Math.max(0,Math.min(1,(c-r.f)/(r.t-r.f))); return r.h0+(r.h1-r.h0)*u; }
 /* 安土山の自然の斜面（林）: 曲輪から下へ、およそ32°で下る。北と東西は内湖へ急に落ちる */
 function hillRaw(x,z){ let h=0; for(const p of PLAT){ if(p.id==='ote') continue; const top=p.H-p.wall-.7*rDist(p,x,z); if(top>h) h=top; }
@@ -2453,7 +2457,7 @@ for(const b of BRIDGES){ if(b.mode==='edo'){ B=BE; woodBridge(b,{batch:BE}); B=B
 /* 大手道: 直線の石段の両側に石敷きの側溝と石塁（発掘で確認）。石段には石仏が転用されている */
 { const r=RAMPS.find(q=>q.id==='otemichi');
   for(let z=r.z0;z<r.z1;z+=2){ const h=rampH(r,0,z+1);
-    for(const s of [-1,1]){ BS.stoneK.add(boxUVGeo(1.1,.25,2.02,1.6,1.6),TM(s*4.75,h-.12,z+1)); BS.stone.add(boxUVGeo(1.2,1.1+(h<1?0:.4),2.02,3,3),TM(s*5.9,h+.25,z+1)); block(s>0?5.3:-6.5,z,s>0?6.5:-5.3,z+2,'castle'); } }
+    for(const s of [-1,1]){ if(ENTR.some(([id,sd,ez])=>sd===s&&Math.abs(z+1-ez)<2.6)) continue; BS.stoneK.add(boxUVGeo(1.1,.25,2.02,1.6,1.6),TM(s*4.75,h-.12,z+1)); BS.stone.add(boxUVGeo(1.2,1.1+(h<1?0:.4),2.02,3,3),TM(s*5.9,h+.25,z+1)); block(s>0?5.3:-6.5,z,s>0?6.5:-5.3,z+2,'castle'); } }
   /* 石仏（いまも石段の中に見られる） */
   for(const [x,z] of [[-2.2,30],[1.4,14],[-.6,-4],[2.6,-22],[-2.8,-38],[.8,-51]]){ const h=rampH(r,x,z); BS.ishibotoke.add(new THREE.CylinderGeometry(.3,.36,.95,10),TM(x,h+.02,z,0,1,1,1,Math.PI/2)); BS.ishibotoke.add(new THREE.SphereGeometry(.22,10,8),TM(x,h+.06,z-.6)); BS.ishibotoke.add(new THREE.TorusGeometry(.36,.05,6,14),TM(x,h+.05,z-.55,0,1,1,1,Math.PI/2)); } }
 /* 黒金門の巨石（安土城でいちばん大きな石が使われている） */
@@ -2563,6 +2567,14 @@ B=BE;
 { const R=RD.hide=mkRoom(Object.assign({era:'edo'},doorAt(-26,-8.4,0,1),roomTxt('羽柴秀吉邸（伝）の主殿','はしばひでよしてい しゅでん','大手道の西、上下二段の屋敷地。発掘で、下段に櫓門と大きな厩、上段に主殿・台所・隅櫓が建ち、大手道に面して高麗門があったことがわかりました。秀吉の屋敷というのは江戸時代の絵図による言い伝えです。',[['事実','建物の配置がすべて判明（発掘）'],['伝承','羽柴秀吉の屋敷'],['広さ','約5000㎡']])));
   const w=14,d=10,h=3.6; shell(R,w,d,h,{floor:'tatami',ftile:1.8,wall:'tl_w_matsu',front:'shoji',ceil:'tl_c_wood',ctile:2.4,door:1.8,lamps:3}); pillarsRow(R,'woodGrain',w,d,h,3,false); nageshi(R,'woodGrain',w,d,2.4); fusumaWall(R,w,d,2.35,3,['fsMokL','fsMokR','tl_w_matsu','tl_f_take']);
   tokonoma(R,-3,-d/2+.2,3,1,2.6); chigaidana(R,1.4,-d/2+.2,2,.8); }
+/* 大手道ぞいの家臣の屋敷（どれも「伝○○邸」は江戸時代の絵図などによる言い伝え） */
+function bukeRoom(key,door,name,kana,text,meta,keys){ const R=RD[key]=mkRoom(Object.assign({era:'edo'},door,roomTxt(name,kana,text,meta)));
+  const w=12,d=9,h=3.4; shell(R,w,d,h,{floor:'tatami',ftile:1.8,wall:keys[0],front:'shoji',ceil:'tl_c_wood',ctile:2.4,door:1.8,lamps:3}); pillarsRow(R,'woodGrain',w,d,h,3,false); nageshi(R,'woodGrain',w,d,2.3); fusumaWall(R,w,d,2.25,3,keys);
+  tokonoma(R,-2.6,-d/2+.2,2.6,.9,2.4); chigaidana(R,1.2,-d/2+.2,1.8,.8); return R; }
+bukeRoom('toshiie',doorAt(28,12.8,0,1),'前田利家邸（伝）','まえだとしいえてい','大手道の東、伝羽柴秀吉邸の向かいにある屋敷。前田利家の屋敷というのは言い伝えです。利家は信長の馬廻から出世し、このころは能登一国の大名でした。折れ曲がった虎口の石垣が残ります。建物は想像です。',[['伝承','前田利家の屋敷'],['見どころ','折れ曲がった虎口']],['tl_w_matsu','tl_f_take','tl_f_sansui']);
+bukeRoom('ieyasu',doorAt(30,-45.2,0,1),'徳川家康邸（伝）','とくがわいえやすてい','大手道の直線の終わりにある屋敷。家康の屋敷というのは言い伝えです。天正10年（1582）5月、家康は安土に招かれ、信長から盛大なもてなしを受けました（記録では宿所は大宝坊）。その半月後に本能寺の変が起こります。建物は想像です。',[['伝承','徳川家康の屋敷'],['記録','天正10年5月の饗応']],['tl_f_sakura','tl_w_tsurumatsu','tl_f_matsu']);
+bukeRoom('sekian',doorAt(-30,-42.7,0,1),'武井夕庵邸（伝）','たけいせきあんてい','大手道の西の屋敷。武井夕庵は信長の右筆（文書を書く役）で、外交の使者も務めた側近です。屋敷というのは言い伝えです。建物は想像です。',[['伝承','武井夕庵の屋敷'],['夕庵','信長の右筆・側近']],['tl_f_sansui','tl_w_sansui','tl_f_take']);
+bukeRoom('nobutada',doorAt(-47,-87.4,0,1),'織田信忠邸（伝）','おだのぶただてい','黒金門の手前の屋敷。信長の嫡男・信忠は天正4年（1576）に家督と岐阜城を譲られました。屋敷というのは言い伝えです。信忠は本能寺の変の日、京の二条御新造で自害しました。建物は想像です。',[['伝承','織田信忠の屋敷'],['信忠','信長の嫡男・岐阜城主']],['fsMokL','fsMokR','tl_w_matsu']);
 /* 摠見寺の本堂 */
 { const R=RD.soken=mkRoom(Object.assign({era:'edo'},doorAt(-96,-66.6,0,1),roomTxt('摠見寺 本堂','そうけんじ ほんどう','信長が安土城の中に建てた寺。各地から仏像や建物を集めたといわれ、三重塔や二王門はいまも残ります。本堂は江戸時代の嘉永7年（1854）に焼けました。フロイスは、信長が自分を拝ませる「盆山」という石を置いたと書いていますが、確かなことはわかっていません。',[['開いた人','織田信長'],['残る建物','三重塔・二王門（重要文化財）'],['本堂','1854年に焼失']])));
   const w=14,d=12,h=4.4; shell(R,w,d,h,{floor:'floor',wall:'plIn',front:'woodGrain',ceil:'tl_c_lattice',ctile:2,door:2,doorMat:'woodGrain',lamps:4}); pillarsRow(R,'shu',w,d,h,3.5,false);
@@ -3151,6 +3163,10 @@ for(const [s,x,y,z] of DECO_KEEP) decoT.add(s,x,y,z,{});
 { const D=RD;
   rp(D.goten,'kuge',-6,0,1,{},true,['勅使の公家','天子さまの行幸の折には、この御殿にお泊まりいただくとか。']); rp(D.goten,'kuge_g',6,0,1.5,{flip:true},true,['公家','清涼殿と同じ間取りとは、まことに畏れ多いことよ。']); rp(D.goten,'andon',-11,0,4.5,{},true); rp(D.goten,'andon',11,0,4.5,{},true);
   rp(D.hide,'hideyoshi',-1.5,0,-1.2,{},true,['羽柴秀吉（伝）','わしの屋敷は大手道の一等地じゃ。上様の天主を、毎朝ここから拝んでおる。']); rp(D.hide,'samurai_a',2.5,0,1.5,{flip:true},true,['秀吉の家臣','殿は中国攻めの最中ゆえ、この屋敷においでのことは少ないのです。']); rp(D.hide,'kakejiku',-3,.2,-4.85,{yaw:0,s:.6}); rp(D.hide,'zabuton_r',-1.5,0,-1);
+  rp(D.toshiie,'sam_kami',-1.5,0,-1,{},true,['前田家の家臣','殿は能登の国主となられ、今は七尾におられます。']); rp(D.toshiie,'zabuton_r',-2.6,0,-1.4);
+  rp(D.ieyasu,'k_ieyasu',-1.5,0,-1,{},true,['徳川家康（伝）','上様のおもてなし、まことにありがたいことじゃ。']); rp(D.ieyasu,'samurai_b',2.5,0,1,{flip:true},true,['徳川家の家臣','明日は京・堺を見物にまいる予定でござる。']);
+  rp(D.sekian,'az_eshi',-1.2,0,-1,{},true,['武井夕庵（伝）','上様の書状は、わしが筆をとって書いておる。']);
+  rp(D.nobutada,'lord_green',-1.3,0,-1.2,{},true,['織田信忠（伝）','父上の天主は、わしの岐阜城よりはるかに高い。']); rp(D.nobutada,'samurai_a',2.4,0,1.2,{flip:true},true,['信忠の家臣','中将さまは、甲斐の武田攻めで大手柄を立てられた。']);
   rp(D.soken,'az_sokenso',2.5,0,1,{},true,['摠見寺の住職','上様は、この寺に参る者は富と長寿を得ると高札で示されたそうな（フロイスの記録）。']); rp(D.soken,'incense',0,1,-d2(D.soken),{});
   rp(D.semi,'frois',-1,0,-2.6,{},true,['ルイス・フロイス','信長殿は、この学校をたいそうお気に召しておられます。']); rp(D.semi,'nanban',3,0,-2.4,{flip:true},true,['宣教師','子どもたちの歌声を聞いて、信長殿もお喜びでした。']); for(const [x,z] of [[-3,-1.2],[3,-1.2],[-3,.4],[3,.4]]) rp(D.semi,'q_child',x,0,z+.6,{},false,['生徒','ラテン語の歌を習っています。']);
   rp(D.machi,'q_merchant',1.6,.45,1.2,{},false,['町家の主人','楽市のおかげで、近江じゅうから客が来ますわい。']); for(const [s,x,z] of [['tawara',-2.5,-1.5],['barrels',-2.4,3.6],['kome',-2.2,.2]]) rp(D.machi,s,x,0,z,{},true);
@@ -3173,6 +3189,9 @@ for(const z of [111,145,169]) decoT.add('az_kui',LAKE_W-.6,-1.6,z,{shadow:false,
 for(const [z,f] of [[105,false],[178,true]]) decoT.add('az_kobune',LAKE_W+2.2,0,z,{yaw:Math.PI/2,flip:f,shadow:false});
 /* 5階・6階の高欄の金の擬宝珠 */
 for(const [x,y,z] of GIBO) decoT.add('az_giboshi',x,y,z,{shadow:false});
+
+/* 伝羽柴秀吉邸の厩（発掘で大きな厩が見つかった）の馬 */
+for(const [x,z,f] of [[-38,15.6,false],[-31,15.6,true],[-24,15.6,false]]) decoT.add('p_horse',x,PL.hideL.H,z,{flip:f});
 function updateChars(dt){ updateNPC(dt); FX.update(dt); const T=TIMES[timeIdx],inside=P.room||P.level>=0; sprTint(inside?1:T.night>.5?.45:timeIdx===2?.88:timeIdx===0?.95:1); }
 /* タップで話す */
 const _pv=V3();
