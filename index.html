@@ -2542,7 +2542,7 @@ for(const [a0,a1,f,ax,dir] of [[72,148,-8.5,'z',1],[162,336,-8.5,'z',1],[72,148,
 for(const z of [210,250,290,330]) for(const [a0,a1] of [[-196,-128],[-86,-22],[22,84],[110,196]]){ simpleRow('edo',a0,a1,z,'x',-1); if(z<330) simpleRow('edo',a0,a1,z+30,'x',1); }
 for(const [a0,a1] of [[-86,-22],[22,84],[110,196]]) simpleRow('edo',a0,a1,100,'x',-1);
 /* 楽市楽座の高札（天正5年「安土山下町中掟書」） */
-{ const x=10,z=163,c=makeCanvas(256,128),g=c.getContext('2d'); g.fillStyle='#d9cdb0'; g.fillRect(0,0,256,128); g.fillStyle='#2a2018'; g.font='bold 30px "Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif'; g.textAlign='center'; g.fillText('定　安土山下町中',128,44); g.font='20px serif'; g.fillText('楽市として仰せ付けらるる',128,84); g.fillText('諸座・諸役・諸公事等免許',128,112);
+{ const x=14,z=159.2,c=makeCanvas(256,128),g=c.getContext('2d'); g.fillStyle='#d9cdb0'; g.fillRect(0,0,256,128); g.fillStyle='#2a2018'; g.font='bold 30px "Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif'; g.textAlign='center'; g.fillText('定　安土山下町中',128,44); g.font='20px serif'; g.fillText('楽市として仰せ付けらるる',128,84); g.fillText('諸座・諸役・諸公事等免許',128,112);
   const m=mesh(new THREE.PlaneGeometry(2.4,1.2),std({map:toTex(c,true,false),roughness:.9})); m.position.set(x,2.4,z-.06); m.rotation.y=Math.PI; GE.add(m); BE.darkwood.add(new THREE.BoxGeometry(2.8,.12,.5),TM(x,3.1,z)); for(const s of [-1,1]) BE.darkwood.add(new THREE.BoxGeometry(.14,3.1,.14),TM(x+s*1.2,1.55,z)); BE.roof.add(gableRoofGeo(3.2,.9,.35,.2,.1),TM(x,3.15,z)); block(x-1.4,z-.3,x+1.4,z+.3,'machi'); }
 /* セミナリヨ: 天正9年（1581）、イエズス会が開いた学校。信長が土地を与え、天主と同じ瓦の使用を許したと伝わる（三階建てと伝わる） */
 { const x=-170,z=104; const X=tenshuExt(GE,x,0,z,[{w:16,d:11,h:4,wall:'wallW',slope:.5},{w:12,d:8,h:3.6,wall:'wallW',slope:.5},{w:8,d:6,h:3.2,wall:'wallW'}],{roof:M.roofA,gable:M.plaster,gold:false,orn:false,oh:1.4,crest:M.tachi,shs:.6,trim:M.plaster});
@@ -2628,13 +2628,13 @@ const SPOTS=[
   {id:'tenshu',name:'天主台跡',kana:'てんしゅだい あと',at:[0,-186],pos:[0,-150],look:[0,72.8,-186],q:'Azuchi castle Tenshu ruins',
    text:'安土山の頂の天主の跡。天正7年（1579）に完成した天主は、天正10年（1582）6月、本能寺の変のあとに焼けました。いまは石垣の一部と、穴蔵（地階）に並ぶ礎石が残ります。ほぼ真ん中の1か所だけ礎石が無く、さまざまな復元案が生まれました。晴れた日には西の湖や琵琶湖が見渡せます。',
    meta:[['完成','天正7年（1579）'],['焼失','天正10年（1582）6月'],['残るもの','石垣・礎石'],['標高','約199m']],
-   edo:{name:'天主',look:[0,109.2,-186],text:'外観5重、内部は地上6階・地下1階の天主。信長はここに住みました。5階は朱の八角、最上階は内も外も金。夜は天正9年の盂蘭盆の夜のように、提灯が灯ります。石垣の南の入口から地階に入り、各階を上れます。姿は記録と復元案をもとにした想像です。',meta:[['完成','天正7年（1579）'],['構造','外観5重・地上6階地下1階'],['入口','天主台の南の戸口']]}},
+   edo:{name:'天主',pos:[0,-166],look:[0,109.2,-186],text:'外観5重、内部は地上6階・地下1階の天主。信長はここに住みました。5階は朱の八角、最上階は内も外も金。夜は天正9年の盂蘭盆の夜のように、提灯が灯ります。石垣の南の入口から地階に入り、各階を上れます。姿は記録と復元案をもとにした想像です。',meta:[['完成','天正7年（1579）'],['構造','外観5重・地上6階地下1階'],['入口','天主台の南の戸口']]}},
   {id:'nino',name:'二の丸・信長公本廟',kana:'にのまる・のぶながこう ほんびょう',at:[44,-182],pos:[33,-178],look:[44,70.2,-182],q:'Oda Nobunaga mausoleum Azuchi',modernOnly:true,
    text:'天主台の東の曲輪。天正11年（1583）、羽柴秀吉が信長の太刀・烏帽子・直垂などを納めて本廟を築きました。いまも石の玉垣に囲まれた墓所があります。',meta:[['築いた人','羽柴秀吉（天正11年）'],['納めた物','太刀・烏帽子・直垂など']]},
-  {id:'nino_e',name:'二の丸',kana:'にのまる',at:[44,-182],pos:[33,-178],look:[44,72.8,-182],edoOnly:true,
+  {id:'nino_e',name:'二の丸',kana:'にのまる',at:[44,-182],pos:[44,-167],look:[44,72.8,-182],edoOnly:true,
    text:'天主の東の曲輪。御殿と櫓が建っていたと考え、想像で再現しました（建物の記録は少ない）。',meta:[['再現','建物は想像']]},
   {id:'san',name:'三の丸',kana:'さんのまる',at:[-46,-182],pos:[-35,-178],look:[-46,72.8,-182],q:'Azuchi castle Sannomaru',
-   text:'天主台の西の曲輪。高い石垣で囲まれています。',meta:[['見どころ','高石垣']],edo:{text:'天主の西の曲輪。御殿や蔵が建っていたと考え、想像で再現しました。'}},
+   text:'天主台の西の曲輪。高い石垣で囲まれています。',meta:[['見どころ','高石垣']],edo:{pos:[-46,-167],text:'天主の西の曲輪。御殿や蔵が建っていたと考え、想像で再現しました。'}},
   {id:'sanju',name:'摠見寺 三重塔',kana:'そうけんじ さんじゅうのとう',at:[-114,-62],pos:[-98,-56],look:[-114,57.2,-62],q:'Soken-ji three-story pagoda',
    text:'室町時代の享徳3年（1454）に建てられた三重塔で、重要文化財。信長が甲賀（滋賀県甲賀市）の寺から移したと伝わります。安土城の時代から残る、数少ない建物のひとつです。',meta:[['建立','享徳3年（1454）'],['文化財','重要文化財'],['伝承','信長が甲賀から移築']]},
   {id:'niomon',name:'摠見寺 二王門',kana:'そうけんじ におうもん',at:[-107,-12],pos:[-107,2],look:[-107,26.0,-12],q:'Soken-ji Niomon gate',
@@ -2649,7 +2649,7 @@ const SPOTS=[
    edo:{name:'セミナリヨ',text:'イエズス会の神学校。信長が城下の土地を与えました。三階建てで、天主と同じ瓦を許されたと伝わります。中に入れます。'}},
   {id:'minato',name:'常楽寺港',kana:'じょうらくじ みなと',at:[-216,140],pos:[-205,141],look:[-240,1,140],edoOnly:true,
    text:'安土の外港。琵琶湖の舟がここに着き、京や湖北・湖西との間を人や物資が行き交いました。安土山は三方を内湖に囲まれ、水運で栄えました。',meta:[['いま','干拓などで湖岸は遠のいた']]},
-  {id:'rakuichi',name:'楽市楽座の高札',kana:'らくいちらくざ',at:[10,163],pos:[10,169],look:[10,2.4,163],edoOnly:true,
+  {id:'rakuichi',name:'楽市楽座の高札',kana:'らくいちらくざ',at:[14,159],pos:[14,153],look:[14,2.4,159.2],edoOnly:true,
    text:'天正5年（1577）、信長は「安土山下町中」あての13か条の掟書を出しました。座の特権をなくし、商人の税や労役を免じて、だれでも自由に商売ができる町にしました。現物は近江八幡市に伝わります。',meta:[['出された年','天正5年（1577）'],['内容','楽市・諸役免除など13か条']]},
   {id:'yakata',name:'安土城天主 信長の館',kana:'のぶながのやかた',at:[196,232],pos:[196,212],look:[196,6,232],q:'Azuchi castle Nobunaga no Yakata',modernOnly:true,
    text:'天主の5・6階を原寸で復元して展示する施設（実際は安土城跡の南東約2km。この地図では近くに置いています）。金色にかがやく6階の座敷の中に入れます。',meta:[['展示','天主5・6階の原寸復元'],['場所','南東へ約2km']]}];
@@ -2855,7 +2855,9 @@ function roomOK(R,x,z){ return R.rects.some(r=>inR(r,x,z,0))&&!R.boxes.some(b=>i
 function enterRoom(R,ex){ P.exitVia=ex||R.exitPos; P.room=R; P.level=-1; P.x=R.spawn[0]; P.z=R.spawn[1]; P.yaw=R.spawn[2]; P.y=R.y+1.6; P.pitch=0; lastArea=''; showHint(R.name+'に入りました。出口へ向かうと外に出ます'); }
 function exitRoom(){ const R=P.room,E=P.exitVia||R.exitPos; P.room=null; P.x=E[0]; P.z=E[1]; P.yaw=E[2]; if(!walkable(P.x,P.z)){ const bx=P.x,bz=P.z; let f=false; for(let r=.5;r<=8&&!f;r+=.5) for(let k=0;k<24&&!f;k++){ const an=k/24*6.283,x=bx+Math.cos(an)*r,z=bz+Math.sin(an)*r; if(walkable(x,z)&&!ROOMS.some(Q=>Q.era===MODE&&inR(Q.zone,x,z,.4))){ P.x=x; P.z=z; f=true; } } } P.y=groundH(P.x,P.z)+1.6; lastArea=''; showHint('外に出ました'); }
 function lookAtSpot(s){ const dx=s.look[0]-s.pos[0],dz=s.look[2]-s.pos[1],dy=s.look[1]-1.6-groundH(s.pos[0],s.pos[1]); P.yaw=Math.atan2(-dx,-dz); P.pitch=Math.max(-.3,Math.min(.35,Math.atan2(dy,Math.hypot(dx,dz)))); }
-function teleport(s){ P.room=null; P.level=-1; P.x=s.pos[0]; P.z=s.pos[1]; P.mode='walk'; $('vView').textContent='歩く'; P.y=groundH(P.x,P.z)+1.6; lookAtSpot(s); }
+function teleport(s){ P.room=null; P.level=-1; P.x=s.pos[0]; P.z=s.pos[1];
+  /* 念のため: 建物などの中に出てしまったら、まわりで歩ける所をさがす */ if(!walkable(P.x,P.z)){ found: for(let r=1;r<=24;r+=1) for(let k=0;k<16;k++){ const a=k/16*6.283,x=s.pos[0]+Math.cos(a)*r,z=s.pos[1]+Math.sin(a)*r; if(walkable(x,z)){ P.x=x; P.z=z; break found; } } }
+  P.mode='walk'; $('vView').textContent='歩く'; P.y=groundH(P.x,P.z)+1.6; lookAtSpot(s); }
 function tOf(s,z){ return Math.min(1,Math.max(0,(z-s.from)/(s.to-s.from))); }
 function stairAt(L,x,z){ const up=ST[L]; if(up&&inR(up,x,z,0)) return {s:up,t:tOf(up,z),dir:1,base:L}; const dn=L>0?ST[L-1]:null; if(dn&&inR(dn,x,z,0)) return {s:dn,t:tOf(dn,z),dir:-1,base:L-1}; return null; }
 function floorY(L,x,z){ const st=stairAt(L,x,z); return st?FL[st.base].y+st.t*st.s.rise:FL[L].y; }
@@ -3149,7 +3151,7 @@ const TOWN_P=[['az_omi','近江の商人','京へも美濃へも、安土から�
   for(let j=0;j<12;j++){ const P2=TOWN_P[k++%TOWN_P.length],xx=-107+(rnd()-.5)*8,z0=72+rnd()*200; npc(P2[0],[[xx,z0],[xx,z0+40]],.5+rnd()*.5,P2[1],P2[2]); }
   for(const [s,x,z,nm,say] of [['nanban',-160,118,'南蛮の宣教師','この学校では、少年たちがラテン語と音楽を学んでおります。'],['frois',-178,116,'ルイス・フロイス','天主は、ヨーロッパの塔よりも気高く壮大に見えます（フロイスの書いた記録をもとにした言葉）。'],
     ['q_merchant',-206,140,'湊の問屋','坂本や大津から、舟荷が着いたぞ。'],['ninpu',-204,128,'荷を運ぶ人足','米俵は蔵へ運べ！'],['w_box',-206,150,'湊の娘','舟の衆に握り飯を届けるところです。'],
-    ['okami_p',-12,120,'茶屋のおかみ','天主の見物の帰りに、ひと休みしていきなされ。'],['az_chajin',-14.5,123,'茶人','上様は名物の茶道具を集め、茶の湯を政にも使われた。'],['az_sendo',-213,134,'湖の船頭','坂本まで舟で半日じゃ。風がよければもっと早い。'],['shonin',12,174,'高札を読む商人','「安土山下町中」あての掟書じゃ。楽市として、座の役も免じるとある。']]) npc(s,[[x,z]],0,nm,say,{fixed:true}); }
+    ['okami_p',-12,120,'茶屋のおかみ','天主の見物の帰りに、ひと休みしていきなされ。'],['az_chajin',-14.5,123,'茶人','上様は名物の茶道具を集め、茶の湯を政にも使われた。'],['az_sendo',-213,134,'湖の船頭','坂本まで舟で半日じゃ。風がよければもっと早い。'],['shonin',11.5,154.5,'高札を読む商人','「安土山下町中」あての掟書じゃ。楽市として、座の役も免じるとある。']]) npc(s,[[x,z]],0,nm,say,{fixed:true}); }
 /* 町の灯り・店先の道具・湊の荷 */
 const decoT=new Crowd(GE,900,false);
 for(const m of MACHI){ const c=Math.cos(m.ry),s=Math.sin(m.ry); for(const off of [-1.2,1.2]){ const x=m.cx+(m.eo+off)*c+(m.F+.5)*s,z=m.cz-(m.eo+off)*s+(m.F+.5)*c; const r=rnd(); if(r<.4) decoT.add(pick(['lan_white','lan_red']),x,1.55,z,{shadow:false}); else if(r<.6&&okW(x+s*.6,z+c*.6,.2)) decoT.add(pick(['tawara','barrels','crates','bucket','jar','pot']),x+s*.4,0,z+c*.4,{}); } }
