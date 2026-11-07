@@ -1852,7 +1852,7 @@ function decoTex(n){ const e=AZD[n],t=new THREE.Texture(); t.encoding=THREE.sRGB
 M.norenTenka=std({map:decoTex('az_noren_tenka'),alphaTest:.5,side:THREE.DoubleSide,roughness:.9});
 
 /* 安土城の人物・小物（共通素材 deco_azuchi2.webp。atlas.json の deco.azuchi2、アトラスの6ページ目） */
-const AZD2={"az_ryu_up": [5, 2, 2, 226, 700, 3.4], "az_ryu_dn": [5, 232, 2, 220, 700, 3.4], "az_nobunaga": [5, 456, 2, 233, 440, 1.78], "az_kosho": [5, 693, 2, 192, 440, 1.6], "az_nyobo": [5, 889, 2, 235, 440, 1.62], "az_eshi": [5, 1128, 2, 215, 440, 1.7], "az_chajin": [5, 1347, 2, 154, 440, 1.68], "az_ishiku": [5, 1505, 2, 199, 440, 1.68], "az_omi": [5, 1708, 2, 309, 440, 1.72], "az_tenshu": [5, 2, 706, 186, 440, 1.68], "az_sendo": [5, 192, 706, 241, 440, 1.95], "az_nanban": [5, 437, 706, 206, 440, 1.85], "az_sokenso": [5, 647, 706, 178, 440, 1.68], "az_roten": [5, 829, 706, 461, 440, 2.3], "az_yakimono": [5, 1294, 706, 477, 340, 1.1], "az_bandai": [5, 2, 1150, 533, 340, 0.75], "az_komedawara": [5, 539, 1150, 369, 340, 1.3], "az_niguruma": [5, 912, 1150, 450, 340, 1.35], "az_kui": [5, 1366, 1150, 250, 340, 1.5], "az_shogi": [5, 2, 1494, 593, 340, 0.85], "az_kodomo": [5, 599, 1494, 124, 300, 1.12], "az_kobune": [5, 727, 1494, 586, 300, 1.5], "az_giboshi": [5, 1317, 1494, 110, 300, 0.34]};
+const AZD2={"az_ryu_up": [5, 2, 2, 226, 700, 3.4], "az_ryu_dn": [5, 232, 2, 220, 700, 3.4], "az_nobunaga": [5, 456, 2, 233, 440, 1.78], "az_kosho": [5, 693, 2, 192, 440, 1.6], "az_nyobo": [5, 889, 2, 235, 440, 1.62], "az_eshi": [5, 1128, 2, 215, 440, 1.7], "az_chajin": [5, 1347, 2, 154, 440, 1.68], "az_ishiku": [5, 1505, 2, 199, 440, 1.68], "az_omi": [5, 1708, 2, 309, 440, 1.72], "az_tenshu": [5, 2, 706, 186, 440, 1.68], "az_sendo": [5, 192, 706, 241, 440, 1.95], "az_nanban": [5, 437, 706, 206, 440, 1.85], "az_sokenso": [5, 647, 706, 178, 440, 1.68], "az_roten": [5, 829, 706, 461, 440, 2.3], "az_kosatsu": [5, 1294, 706, 137, 380, 2.3], "az_yakimono": [5, 1435, 706, 477, 340, 1.1], "az_bandai": [5, 2, 1150, 533, 340, 0.75], "az_komedawara": [5, 539, 1150, 369, 340, 1.3], "az_niguruma": [5, 912, 1150, 450, 340, 1.35], "az_kui": [5, 1366, 1150, 250, 340, 1.5], "az_shogi": [5, 2, 1494, 593, 340, 0.85], "az_kodomo": [5, 599, 1494, 124, 300, 1.12], "az_kobune": [5, 727, 1494, 586, 300, 1.5], "az_giboshi": [5, 1317, 1494, 110, 300, 0.34], "az_sake": [5, 1431, 1494, 346, 260, 1.0]};
 /* 描いた障壁画・天井・縁の板（共通素材 tex/az_*.webp）。読み込めるまでは無地の色 */
 function artTex(file,cw,ch,fill){ const c=makeCanvas(cw,ch),g=c.getContext('2d'); g.fillStyle=fill; g.fillRect(0,0,cw,ch); const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; t.wrapS=t.wrapT=THREE.RepeatWrapping; t.anisotropy=8;
   const A={c,t,extra:[]}; const im=new Image(); im.onload=()=>{ g.drawImage(im,0,0,cw,ch); t.needsUpdate=true; A.extra.forEach(x=>x.needsUpdate=true); }; im.src='/oshiro/common/assets/tex/'+file+'.webp'; return A; }
@@ -3194,6 +3194,10 @@ for(const [x,y,z] of GIBO) decoT.add('az_giboshi',x,y,z,{shadow:false});
 
 /* 伝羽柴秀吉邸の厩（発掘で大きな厩が見つかった）の馬 */
 for(const [x,z,f] of [[-38,15.6,false],[-31,15.6,true],[-24,15.6,false]]) decoT.add('p_horse',x,PL.hideL.H,z,{flip:f});
+
+/* 酒樽と菰かぶり（城下の店先・茶屋・湊）と、町の辻や湊の高札 */
+for(const [x,z] of [[-88,151],[94,159],[-3.6,121],[-207,170],[-204,112],[70,151]]) decoT.add('az_sake',x,0,z,{});
+for(const [x,z] of [[-101,64.5],[-213,135],[95,161.5],[-4,212]]) decoT.add('az_kosatsu',x,0,z,{});
 function updateChars(dt){ updateNPC(dt); FX.update(dt); const T=TIMES[timeIdx],inside=P.room||P.level>=0; sprTint(inside?1:T.night>.5?.45:timeIdx===2?.88:timeIdx===0?.95:1); }
 /* タップで話す */
 const _pv=V3();
