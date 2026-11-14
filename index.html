@@ -2707,6 +2707,9 @@ const SPOTS=[
    text:'天正5年（1577）、信長は「安土山下町中」あての13か条の掟書を出しました。座の特権をなくし、商人の税や労役を免じて、だれでも自由に商売ができる町にしました。現物は近江八幡市に伝わります。',meta:[['出された年','天正5年（1577）'],['内容','楽市・諸役免除など13か条']]},
   {id:'yakata',name:'安土城天主 信長の館',kana:'のぶながのやかた',at:[196,232],pos:[196,212],look:[196,6,232],q:'Azuchi castle Nobunaga no Yakata',modernOnly:true,
    text:'天主の5・6階を原寸で復元して展示する施設（実際は安土城跡の南東約2km。この地図では近くに置いています）。金色にかがやく6階の座敷の中に入れます。',meta:[['展示','天主5・6階の原寸復元'],['場所','南東へ約2km']]}];
+/* お城さんぽ共通（/oshiro/common/fuda.js の見どころ札・写真モード）へ、名所と自分の位置を知らせる窓口 */
+window.OshiroGame={ spots:()=>spotList(), all:()=>SPOTS, me:()=>({x:P.x,z:P.z,level:P.level,room:!!P.room,walk:P.mode==='walk',tour:typeof tour!=='undefined'&&!!tour.on}), started:()=>typeof started==='undefined'||!!started, warpAt:0 };
+{ const _tp=teleport; teleport=function(s){ window.OshiroGame.warpAt=performance.now(); return _tp.apply(this,arguments); }; }
 function spotList(){ return SPOTS.filter(s=>MODE==='edo'?!s.modernOnly:!s.edoOnly).map(s=>MODE==='edo'&&s.edo?Object.assign({},s,s.edo):s); }
 function areaAt(x,z){ const e=MODE==='edo';
   for(const b of actB()) if(inR(b,x,z,.2)) return b.name;
@@ -3408,6 +3411,7 @@ renderer.domElement.addEventListener('webglcontextlost',e=>{ e.preventDefault();
 })();
 </script>
 <script src="/oshiro/common/goshuin.js"></script>
+<script src="/oshiro/common/fuda.js"></script>
 <!-- oshiro-portal:end -->
 
 </body>
